@@ -1,561 +1,915 @@
 <!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=1024" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <title>DISC | Web Front-End Workflow | by Michal Weiser @michal_weiser</title>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <meta name="description" content="Presentation for DISCCON 2016" />
-    <meta name="author" content="Michal Weiser" />
+		<title>DISCCON 2017 - Michał Weiser - design@scale</title>
 
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,semibold,italic,italicsemibold|PT+Sans:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic" rel="stylesheet" />
+		<link rel="shortcut icon" href="favicon.png" />
 
-    <link href="css/impress-demo.css" rel="stylesheet" />
-    <link href="style.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/disc.css">
+		<link rel="stylesheet" href="css/theme/blood.css">
 
-    <link rel="shortcut icon" href="favicon.png" />
-    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-    <script src="raphael.min.js"></script>
-</head>
-<body class="impress-not-supported">
-<div class="fallback-message">
-    <p>Your browser <b>doesn't support the features required</b> by impress.js, so you are presented with a simplified version of this presentation.</p>
-    <p>For the best experience please use the latest <b>Chrome</b>, <b>Safari</b> or <b>Firefox</b> browser.</p>
-</div>
-<div id="impress">
-    <div id="disccon" class="step intro" data-x="-1400" data-y="-1500">
-        <header>
-          <h1>Web Front-End Workflow</h1>
-          <h2 class="name">Michal Weiser</h2>
-          <h2 class="date">Apr 23th 2016</h2>
-        </header>
-        <footer></footer>
-    </div>
-    <div id="hi" class="step hi" data-x="400" data-y="-1500">
-        <nav class="twitter">
-          <a href="https://twitter.com/michal_weiser">@michal_weiser</a>
-        </nav>
-        <h1>Hi</h1>
-    </div>
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
 
-    <div id="timeline" class="step" data-x="2600" data-y="-1500" scale="4">
-      <div id="canvas_container"></div>
-      <script>
-        var paper = new Raphael(document.getElementById('canvas_container'), 1000, 500);
-        var linePosition = 450;
-        function tickAt(where, size, text) {
-          var line = paper.path( 'M' + where + ',' + (linePosition - size) + ' L' + where + ',' + linePosition );
-          var text = paper.text(where, linePosition + 20, text);
-          line.attr({
-            'stroke': 'white',
-            'stroke-width': 3
-          });
-          text.attr({
-            'fill': 'white',
-            'stroke-width': 0,
-            'font-family': 'Arial',
-            'font-size': 20
-          });
-          return line;
-        }
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="copy">&copy; Oracle - NetSuite 2017</div>
+		<div class="reveal">
+			<div class="slides">
+				<section id="intro">
+				
+				</section>
+				<section>
+					<img src="img/cssawe.png" width="400px" alt="CSS">
+					<aside class="notes">
+						Hi everyone,
+						my name is Michal Weiser, I'm here from the NetSuite XD team and
+						it's an honor to open such a event with my presentation. Please rise
+						your hand if you've been there last year!
 
-        function badge(paper, where, fromLine, width, height, src, attr) {
-          var badge = paper.image(src, where - (width/2), linePosition - fromLine - height, width, height);
-          attr && badge.attr(attr);
-          return badge;
-        }
+						Thank you, maybe some of you remeber me talking about the web workflows
+						last time. Today the topic is related to the front-end yet it's has a to
+						do something with the experience design.
 
-        badge(paper, 750, -1, 300, 200, 'img/messhalf.jpg');
-        var line = paper.path( 'M50,' + linePosition + ' L900,' + linePosition );
-        line.attr({
-          'stroke': 'white',
-          'stroke-width': 3
-        });
+						You may have registered that I'm a developer but I came here from
+						the experience design team. You may ask what developer could possibly
+						do in the design team, so let me take you to a short story.
+					</aside>
+				</section>
+				<section id="team">
+					<img id="person" src="img/person.png" alt="person">
+					<h3 id="person-number" class="fragment">⟨0,1⟩</h3>
+					<img class="fragment" id="persons" src="img/persons.png" alt="persons" width="1920" height="1080">
+					<aside class="notes">
+						Today we will cover the cloud web solution, we'll skip the mobile devices
+						to make it a bit simpler. When talking about the web design, do you know
+						what is the size range of the team which is capable of producing cosistent
+						product design? Between zero and one, right.
 
-        badge(paper, 50, 30, 40, 40, 'img/html.jpg', {
-          href: 'https://en.wikipedia.org/wiki/HTML',
-          target: '_blank',
-          title: 'HTML'
-        });
-        tickAt(50, 20, '1993');
-        badge(paper, 100, 30, 40, 40, 'img/js.png', {
-          href: 'https://en.wikipedia.org/wiki/JavaScript',
-          target: '_blank',
-          title: 'JavaScript'
-        });
-        tickAt(100, 20, '1995');
-        badge(paper, 150, 30, 40, 40, 'img/css.png', {
-          href: 'https://en.wikipedia.org/wiki/Cascading_Style_Sheets',
-          target: '_blank',
-          title: 'CSS'
-        });
-        tickAt(150, 20, '1996');
-        tickAt(450, 20, '2006');
-        badge(paper, 450, 30, 40, 40, 'img/jquery.png', {
-          href: 'https://jquery.com/',
-          target: '_blank',
-          title: 'jQuery'
-        });
-        tickAt(550, 20, '2009');
-        badge(paper, 550, 30, 40, 40, 'img/nodejs.png', {
-          href: 'https://nodejs.org/en/',
-          target: '_blank',
-          title: 'node.js'
-        });
-        tickAt(650, 20, '2011');
-        badge(paper, 650, 30, 70, 30, 'img/npm.svg', {
-          href: 'https://www.npmjs.com/',
-          target: '_blank',
-          title: 'npm'
-        });
-        tickAt(900, 200, 'now');
-      </script>
-    </div>
+						But, this is how it looks in reality. Corporate companies have design
+						and development teams spread all over the world. 
+					</aside>
+				</section>
+				<!--<section id="designsystems">
+					<table class="designsystems">
+						<tr>
+							<td><a href="https://material.io/guidelines/"><img width="100px" src="img/google-material.png" alt="Material.io"></a></td>
+							<td><a href="https://airbnb.design/the-way-we-build/"><img width="108px" src="img/airbnb.jpg" alt="Airbnb"></a></td>
+							<td><a href="https://www.lightningdesignsystem.com/guidelines/overview/"><img width="100px" src="img/salesforce.png" alt="Salesforce"></a></td>
+						</tr>
+						<tr>
+							<td>Google</td>
+							<td>Airbnb</td>
+							<td>Salesforce</td>
+						</tr>
+						<tr>
+							<td><a href="https://medium.com/@hellostanley/design-doesnt-scale-4d81e12cbc3e"><img width="100px" src="img/spotify.png" alt="Spotify"></a></td>
+							<td><a href="https://www.ibm.com/design/language/"><img width="100px" src="img/ibm.jpg" alt="IBM"></a></td>
+							<td><a href="https://www.gov.uk/design-principles"><img width="100px" src="img/govuk.jpg" alt="gov.uk"></a></td>
+							
+						</tr>
+						<tr>
+							<td>Spotify</td>
+							<td>IBM</td>
+							<td>gov.uk</td>
+						</tr>
+					</table>
+				</section>-->
+				<section id="current-state">
+					<table>
+						<tr>
+							<td>40</td>
+							<td>shades of blue defined in 2000 places (primary color)</td>
+						</tr>
+						<tr>
+							<td>200</td>
+							<td>font-family definitions</td>
+						</tr>
+						<tr>
+							<td>350</td>
+							<td>font-sizes</td>
+						</tr>
+						<tr>
+							<td>infinity</td>
+							<td>custom pixel sizes</td>
+						</tr>
+					</table>
+					<aside class="notes">
+						To keep the consistency
+						in this setup takes a lot of patience and commitment. Recently a lot of
+						companies build their own ...
+					</aside>
+				</section>
+				<section id="designsystem">
+					<h2 class="red">Design System</h2>
+					<h5 class="fragment">a living style guide</h5>
+					<aside class="notes">
+						Design Systems. This new buzzword in the design world is widely used but
+						there are just a few people understanding what these two words stand for. Like the definition
+						says, systems solve easy, recuring problems, so products teams can focus on the hard problems.
 
-    <div id="historicalcode" class="step" data-x="1000" data-y="-2500" style="width: 580px;">
-      <pre>
-          <code>
-              var form = document.forms[0];
-              if (form.name.length == 0) {
-                alert('Please fill your name.');
-                return false;
-              }
-          </code>
-      </pre>
-    </div>
+						So now try to imagine that you're the Lead Designer for the corporate product
+						and your goal is to unify designs across the company.
 
-    <div id="historical" class="step list" data-x="2800" data-y="-2500" style="width: 430px;">
-      <h5>Historical</h5>
-      <a href="https://jquery.com/" title="jQuery" target="_blank"><img alt="jQuery" src="img/jquery.png" class="badge small"></a>
-      <a href="https://jqueryui.com/" title="jQuery UI" target="_blank"><img alt="jQuery UI" src="img/jqueryui.gif" class="badge small"></a>
-      <a href="http://yuilibrary.com/" title="YUI" target="_blank"><img alt="YUI" src="img/yui.png" class="badge small"></a>
-      <br>
-      <a href="https://dojotoolkit.org/" title="dojo" target="_blank"><img alt="dojo" src="img/dojo.png" class="badge"></a>
-      <a href="https://www.sencha.com/products/extjs/" title="Ext JS" target="_blank"><img alt="Ext JS" src="img/extjs.png" class="badge"></a>
-      <a href="http://prototypejs.org/" title="prototype" target="_blank"><img alt="prototype" src="img/prototype.png" class="badge"></a>
-      <br>
-      <a href="http://mootools.net/" title="mootools" target="_blank"><img alt="mootools" src="img/mootools.png" class="badge"></a>
-      <br>
-      <a href="http://vanilla-js.com/" title="Vanilla JS" target="_blank"><img alt="Vanilla JS" src="img/vanilla.png" class="badge"></a>
-    </div>
+						Let's start with ...
+					</aside>
+				</section>
+				<section class="full" data-transition="zoom">
+					<div class="button-wrapper"><button class="thebutton standalone nocolor glory">The Button</button></div>
+					<aside class="notes">
+						an almighty button. You can find it in every possible application.
+						Designing it should be a peace of cake ... right? So, let's do it.
+						Before we even start, we need to face ...
+					</aside>
+				</section>
+				<section id="naming">
+					<h3>problem no. 1</h3>
+					<h2 class="fragment">naming things</h2>
+					<div class="spacer2"></div>
+					<div class="code">
+						<div class="fragment">button</div>
+						<div class="fragment">theButton</div>
+						<div class="fragment">TheButton</div>
+						<div class="fragment">the-buttonLabel</div>
+						<div class="fragment">thebuttonlabel-active</div>
+						<div class="fragment">...</div>
+					</div>
+					<div class="spacer2"></div>
+					<img src="img/fail.jpg" alt="fail" class="fail fragment" width="600px">
+					<aside class="notes">
+						the problem nuber one in the problem solving. Anyone knows what this is?
+						Yes ... naming things. You've probably get yourself to naming the things
+						and you know how it goes ... so let's fix this problem first
+					</aside>
+				</section>
+				<section id="bem">
+					<a href="http://getbem.com/"><img src="img/bem.svg" width="400px" alt="BEM"></a>
+					<div class="spacer2"></div>
+					<h3 class="fragment code"><span class="green">b</span>lock => <span class="green">the-button</span></h3>
+					<h3 class="fragment code"><span class="blue">e</span>lement => <span class="green">the-button</span><span class="blue">__title</span></h3>
+					<h3 class="fragment code"><span class="red">m</span>odifiers => <span class="green">the-button</span><span class="blue">__title</span><span class="red">--active</span></h3>
+					<aside class="notes">
+						by using BEM. This methodology invented by russian Yandex gives us
+						the framework for naming things. Single BEM letters stand for
 
-    <div id="historicalworkflow" class="step" data-x="4000" data-y="-2500" style="width: 580px;">
-      <h5>Workflow pipeline</h5>
-      <a href="https://www.w3.org/TR/html4/" title="HTML4" target="_blank"><img alt="HTML4" src="img/html.jpg" class="badge small"></a>
-      <img src="img/arrow.png" class="arrow">
-      <a href="http://vanilla-js.com/" title="Vanilla.js" target="_blank"><img alt="Vanilla.js" src="img/vanilla.png" class="badge small"></a>
-      <img src="img/arrow.png" class="arrow">
-      <a href="http://yui.github.io/yuicompressor/" title="YUI Compressor" target="_blank"><img alt="YUI Compressor" src="img/yui.png" class="badge small"></a>
-      <img src="img/arrow.png" class="arrow">
-      <a href="https://en.wikipedia.org/wiki/Internet_Explorer_6" title="IE6" target="_blank"><img alt="IE6" src="img/ie6.png" class="badge small"></a>
-    </div>
+						block
+						element
+						modifier
+					</aside>
+				</section>
+				<section id="designtoken" class="full" data-transition="zoom">
+					<div class="button-wrapper">
+						<div class="around-button">
+							<button class="thebutton standalone nocolor">The Button</button>
+							<div class="button-font fragment" data-fragment-index="0"><span class="font-space"></span>I</div>
+						</div>
+						<div class="spacer2"></div>
+						<div class="token fragment" data-fragment-index="5">button</div>
+						<div class="spacer2"></div>
+						<table class="nomargin">
+							<tr class="fragment" data-fragment-index="1">
+								<td>button__title__font</td>
+								<td>Arial</td>
+							</tr>
+							<tr class="fragment" data-fragment-index="2">
+								<td>button__title__size--text</td>
+								<td>20px</td>
+							</tr>
+							<tr class="fragment" data-fragment-index="3">
+								<td>button__title__size--line</td>
+								<td>24px</td>
+							</tr>
+						</table>
+						<div class="spacer2"></div>
+						<h3 class="fragment oracle-text" data-fragment-index="4">Design Token</h3>
+					</div>
+				</section>
+				<section id="typography" class="full" data-background-transition="zoom">
+					<h3>Typography Token</h3>
+					<div class="fragment">
+						<h5 class="red">font family</h5>
+						<table>
+							<tr>
+								<td>ds__typography__font__primary</td>
+								<td>Arial</td>
+							</tr>
+							<tr>
+								<td>ds__typography__font__secondary</td>
+								<td>Open Sans</td>
+							</tr>
+						</table>
+					</div>
+					<div class="spacer2"></div>
+					<div class="fragment">
+						<h5 class="red">sizes</h5>
+						<table>
+							<tr>
+								<td>ds__typography__size__base--text</td>
+								<td>12px</td>
+							</tr>
+							<tr>
+								<td>ds__typography__size__base--line</td>
+								<td>14px</td>
+							</tr>
+						</table>
+						<table class="fragment">
+							<tr>
+								<td>ds__typography__size__xs--text</td>
+								<td>calc( 0.8 * base--text )</td>
+							</tr>
+							<tr>
+								<td>ds__typography__size__xs--line</td>
+								<td>calc( 0.8 * base--line )</td>
+							</tr>
+							<tr>
+								<td>ds__typography__size__m--text</td>
+								<td>calc( 1 * base--text )</td>
+							</tr>
+							<tr>
+								<td>ds__typography__size__m--line</td>
+								<td>calc( 1 * base--line )</td>
+							</tr>
+							<tr>
+								<td style="text-align: center;" colspan="2">...</td>
+							</tr>
+						</table>
+					</div>
+				</section>
+				<section id="buttonfonts" class="full" data-transition="zoom">
+					<div class="button-wrapper">
+						<div class="around-button">
+							<button class="thebutton standalone nocolor">The Button</button>
+							<div class="button-font" data-fragment-index="0"><span class="font-space"></span>I</div>
+						</div>
+						<div class="spacer2"></div>
+						<h3>button token</h3>
+						<table class="nomargin">
+							<tr>
+								<td>button__title__font</td>
+								<td class="fragment" data-fragment-index="1">ds__typography__font__primary</td>
+							</tr>
+							<tr>
+								<td>button__title__text-size</td>
+								<td class="fragment" data-fragment-index="1">ds__typography__size__m--font</td>
+							</tr>
+							<tr>
+								<td>button__title__line-size</td>
+								<td class="fragment" data-fragment-index="1">ds__typography__size__m--line</td>
+							</tr>
+						</table>
+						<div class="spacer2"></div>
+						<div class="flex-row">
+							<div class="token inline-token fragment" style="margin-right: 20px;" data-fragment-index="2">typography</div>
+							<div class="arrow fragment" data-fragment-index="3">
+								<svg xmlns="http://www.w3.org/2000/svg" viewbox='0, 0, 100, 100'>
+									<polygon points="0,0 100,50 0,100 20, 50" />
+								</svg>
+							</div>
+							<div class="token inline-token fragment" style="margin-left: 20px;" data-fragment-index="2">button</div>
+						</div>
+					</div>
+				</section>
+				<section id="buttonspaces" class="full" data-transition="zoom">
+					<div class="button-wrapper">
+						<div class="around-button red">
+							<button class="thebutton standalone nocolor">The Button</button>
+							<div class="button-font"><span class="font-space"></span></div>
+							<span class="fragment inset-space top" data-fragment-index="0">I</span>
+							<span class="fragment inset-space bottom" data-fragment-index="0">I</span>
+							<span class="fragment inset-space left" data-fragment-index="0">I</span>
+							<span class="fragment inset-space right" data-fragment-index="0">I</span>
+						</div>
+						<div class="spacer2"></div>
+						<h3>button token</h3>
+						<table class="nomargin">
+							<tr class="fragment" data-fragment-index="1">
+								<td>button__space--inside</td>
+								<td>ds__space__inset__squish__m</td>
+							</tr>
+							<tr class="fragment" data-fragment-index="1">
+								<td>button__space--outside</td>
+								<td>ds__space__nospace</td>
+							</tr>
+						</table>
+						<div class="spacer2"></div>
+						<div class="flex-row">
+							<div class="token inline-token fragment" style="margin-right: 20px;" data-fragment-index="2">spacing</div>
+							<div class="arrow fragment" data-fragment-index="2">
+								<svg xmlns="http://www.w3.org/2000/svg" viewbox='0, 0, 100, 100'>
+									<polygon points="0,0 100,50 0,100 20, 50" />
+								</svg>
+							</div>
+							<div class="token inline-token fragment" style="margin-left: 20px;" data-fragment-index="2">button</div>
+						</div>
+					</div>
+				</section>
+				<section id="spacing1">
+					<h3>Spacing Token</h3>
+					<div class="fragment" data-fragment-index="0">
+						<h5 class="red">base size</h5>
+						<table>
+							<tr>
+								<td>ds__spacing__base</td>
+								<td>16px</td>
+							</tr>
+							<tr>
+								<td>ds__spacing__nospace</td>
+								<td>0</td>
+							</tr>
+						</table>
+					</div>
+					<div class="spacer2"></div>
+					<img src="img/geometric_progression.png" width="700px" alt="Geomtric Progression" class="fragment" data-fragment-index="1">
+					<div class="spacer2"></div>
+					<h5 class="fragment red" data-fragment-index="1">geometric progression</h5>
+				</section>
+				<section id="spacing2">
+					<h3>Spacing Token</h3>
+					<div>
+						<h5 class="red">sizes</h5>
+						<table>
+							<tr>
+								<td>ds__spacing__size--1/2</td>
+								<td>calc(ds__spacing__base / 2)</td>
+							</tr>
+							<tr>
+								<td class="red">ds__spacing__size--1</td>
+								<td>ds__spacing__base</td>
+							</tr>
+							<tr>
+								<td>ds__spacing__size--2</td>
+								<td>calc( ds__spacing__base * 2 )</td>
+							</tr>
+						</table>
+					</div>
+					<div class="spacer2"></div>
+					<div class="fragment">
+						4px, 8px, 16px, 32px, 64px, ...
+					</div>
+					<div class="spacer2"></div>
+					<div class="fragment">
+						<h5 class="red">insets</h5>
+						<table>
+							<tr>
+								<td>ds__spacing__inset--1/2</td>
+								<td>[ ds__spacing__size--1/2, ds__spacing__size--1/2 ]</td>
+							</tr>
+							<tr>
+								<td>ds__spacing__inset--squish--1/2__1</td>
+								<td>[ ds__spacing__size--1/2, ds__spacing__size--1 ]</td>
+							</tr>
+						</table>
+					</div>
+				</section>
+				<section id="border">
+					<div class="token inline-token">borders</div>
+					<div class="spacer2"></div>
+					<table class="fragment">
+						<tr>
+							<td>ds__borders__size--s</td>
+							<td>1px</td>
+						</tr>
+						<tr>
+							<td>ds__borders__size--m</td>
+							<td>2px</td>
+						</tr>
+						<tr>
+							<td>ds__borders__radius--s</td>
+							<td>3px</td>
+						</tr>
+						<tr>
+							<td>ds__borders__radius--m</td>
+							<td>5px</td>
+						</tr>
+					</table>
+				</section>
+				<section id="button-sizes">
+					<div class="flex-row">
+						<div class="token inline-token" style="margin-right: 20px;">typography</div>
+						<div class="token inline-token" style="margin-right: 20px;">spacing</div>
+						<div class="token inline-token" style="margin-right: 20px;">borders</div>
+						<div class="token inline-token" >button</div>
+					</div>
+					<div class="spacer2"></div>
+					<div class="fragment" data-fragment-index="0">
+						<button class="thebutton button-small nocolor noborder">small</button>
+						<button class="thebutton button-medium nocolor noborder">medium</button>
+						<button class="thebutton button-large nocolor noborder">large</button>
+					</div>
+					<div class="spacer2"></div>
+					<div class="fragment" data-fragment-index="0">
+						<button class="thebutton border-visible button-large border-large nocolor">large</button>
+						<button class="thebutton border-visible button-medium border-medium nocolor">medium</button>
+						<button class="thebutton border-visible button-small border-small nocolor">small</button>
+					</div>
+				</section>
+				<section id="colors">
+					<div class="flex-row">
+						<div class="token inline-token">colors</div>
+					</div>
+					<div class="spacer2"></div>
+					<div class="fragment">
+						<h5 class="red">theme</h5>
+						<table class="fragment">
+							<tr>
+								<td>ds__colors__theme--primary</td>
+								<td><div class="color primary">&nbsp;</div></td>
+							</tr>
+							<tr>
+								<td>ds__colors__theme--secondary</td>
+								<td><div class="color secondary">&nbsp;</div></td>
+							</tr>
+						</table>
+					</div>
+					<div class="spacer2"></div>
+					<div class="fragment">
+						<div class="color primary" style="filter: brightness(0.3);">&nbsp;</div>
+						<div class="color primary" style="filter: brightness(0.7);">&nbsp;</div>
+						<div class="color primary">&nbsp;</div>
+						<div class="color primary" style="filter: brightness(1.3);">&nbsp;</div>
+						<div class="color primary" style="filter: brightness(1.7);">&nbsp;</div>
+						&nbsp;
+						&nbsp;
+						<div class="color secondary" style="filter: brightness(0.3);">&nbsp;</div>
+						<div class="color secondary" style="filter: brightness(0.7);">&nbsp;</div>
+						<div class="color secondary">&nbsp;</div>
+						<div class="color secondary" style="filter: brightness(1.3);">&nbsp;</div>
+						<div class="color secondary" style="filter: brightness(1.7);">&nbsp;</div>
+					</div>
+					<div class="spacer2"></div>
+					<div class="fragment">
+						<h5 class="red">shades</h5>
+						<div style="box-shadow: 0 0 1px 1px white; display: inline-block;">
+							<div class="color white" style="filter: brightness(0);">&nbsp;</div>
+						</div>
+						<div class="color white" style="filter: brightness(0.2);">&nbsp;</div>
+						<div class="color white" style="filter: brightness(0.4);">&nbsp;</div>
+						<div class="color white" style="filter: brightness(0.6);">&nbsp;</div>
+						<div class="color white" style="filter: brightness(0.8);">&nbsp;</div>
+						<div class="color white">&nbsp;</div>
+					</div>
+					<div class="spacer2"></div>
+				</section>
+				<section id="colorpalette">
+					<div class="flex-row">
+						<div class="token inline-token">color<br>palette</div>
+					</div>
+					<div class="spacer1"></div>
+					<div class="fragment" data-fragment-index="1">
+						ds__color-palette__purple--400
+					</div>
+					<div class="spacer1"></div>
+					<div class="fragment" data-fragment-index="0">
+						<div>
+							<div class="color purple" style="filter: brightness(0.3);">&nbsp;</div>
+							<div class="color purple" style="filter: brightness(0.7);">&nbsp;</div>
+							<div class="color purple">&nbsp;</div>
+							<div class="color purple" style="filter: brightness(1.3);">&nbsp;</div>
+							<div class="color purple" style="filter: brightness(1.7);">&nbsp;</div>
+						</div>
+						<div class="spacer1"></div>
+						<div>
+							<div class="color blue" style="filter: brightness(0.3);">&nbsp;</div>
+							<div class="color blue" style="filter: brightness(0.7);">&nbsp;</div>
+							<div class="color blue">&nbsp;</div>
+							<div class="color blue" style="filter: brightness(1.3);">&nbsp;</div>
+							<div class="color blue" style="filter: brightness(1.7);">&nbsp;</div>
+						</div>
+						<div class="spacer1"></div>
+						<div>
+							<div class="color green" style="filter: brightness(0.3);">&nbsp;</div>
+							<div class="color green" style="filter: brightness(0.7);">&nbsp;</div>
+							<div class="color green">&nbsp;</div>
+							<div class="color green" style="filter: brightness(1.3);">&nbsp;</div>
+							<div class="color green" style="filter: brightness(1.7);">&nbsp;</div>
+						</div>
+						<div class="spacer1"></div>
+						<div>
+							<div class="color yellow" style="filter: brightness(0.3);">&nbsp;</div>
+							<div class="color yellow" style="filter: brightness(0.7);">&nbsp;</div>
+							<div class="color yellow">&nbsp;</div>
+							<div class="color yellow" style="filter: brightness(1.3);">&nbsp;</div>
+							<div class="color yellow" style="filter: brightness(1.7);">&nbsp;</div>
+						</div>
+						<div class="spacer1"></div>					
+						<div>
+							<div class="color orange" style="filter: brightness(0.3);">&nbsp;</div>
+							<div class="color orange" style="filter: brightness(0.7);">&nbsp;</div>
+							<div class="color orange">&nbsp;</div>
+							<div class="color orange" style="filter: brightness(1.3);">&nbsp;</div>
+							<div class="color orange" style="filter: brightness(1.7);">&nbsp;</div>
+						</div>
+						<div class="spacer1"></div>
+						<div>
+							<div class="color red" style="filter: brightness(0.3);">&nbsp;</div>
+							<div class="color red" style="filter: brightness(0.7);">&nbsp;</div>
+							<div class="color red">&nbsp;</div>
+							<div class="color red" style="filter: brightness(1.3);">&nbsp;</div>
+							<div class="color red" style="filter: brightness(1.7);">&nbsp;</div>
+						</div>
+						<div class="spacer1"></div>
+						avoiding middle segments
+					</div>
+				</section>
+				<section id="semanticcolors">
+					<div class="flex-row">
+						<div class="token inline-token">semantic<br>colors</div>
+					</div>
+					<div class="spacer1"></div>
+					<div class="fragment" data-fragment-index="1">
+						ds__semantic-color__warning--darker
+					</div>
+					<div class="spacer2"></div>
+					<div class="fragment" data-fragment-index="0">
+						<table>
+							<tr>
+								<td>warning</td>
+								<td>
+									<div>
+										<div class="color yellow" style="filter: brightness(0.6);">&nbsp;</div>
+										<div class="color yellow" style="filter: brightness(0.8);">&nbsp;</div>
+										<div class="color yellow" style="margin: 0 30px;">&nbsp;</div>
+										<div class="color yellow" style="filter: brightness(1.2);">&nbsp;</div>
+										<div class="color yellow" style="filter: brightness(1.4);">&nbsp;</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>error</td>
+								<td>
+									<div>
+										<div class="color red" style="filter: brightness(0.6);">&nbsp;</div>
+										<div class="color red" style="filter: brightness(0.8);">&nbsp;</div>
+										<div class="color red" style="margin: 0 30px;">&nbsp;</div>
+										<div class="color red" style="filter: brightness(1.2);">&nbsp;</div>
+										<div class="color red" style="filter: brightness(1.4);">&nbsp;</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>success</td>
+								<td>
+									<div>
+										<div class="color green" style="filter: brightness(0.6);">&nbsp;</div>
+										<div class="color green" style="filter: brightness(0.8);">&nbsp;</div>
+										<div class="color green" style="margin: 0 30px;">&nbsp;</div>
+										<div class="color green" style="filter: brightness(1.2);">&nbsp;</div>
+										<div class="color green" style="filter: brightness(1.4);">&nbsp;</div>
+									</div>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</section>
+				<section id="button-states">
+					<div>
+						<div>
+							<div class="token inline-token" style="margin-right: 20px;">typography</div>
+							<div class="token inline-token" style="margin-right: 20px;">spacing</div>
+							<div class="token inline-token" style="margin-right: 20px;">borders</div>
+						</div>
+						<div>
+							<div class="token inline-token" style="margin-right: 20px;">colors</div>
+							<div class="token inline-token" style="margin-right: 20px;">color<br>palette</div>
+							<div class="token inline-token" style="margin-right: 20px;">semantic<br>colors</div>
+							<div class="token inline-token" >button</div>
+						</div>
+					</div>
+					<div class="spacer2"></div>
+					<div class="fragment" data-fragment-index="0">
+						<button class="thebutton button-large border-large button-primary">large primary</button>
+						<button class="thebutton button-medium border-medium button-secondary">medium</button>
+						<button class="thebutton button-small border-small button-default">small default</button>
+					</div>
+					<div class="spacer2"></div>
+					<div class="fragment" data-fragment-index="1">
+						<button class="thebutton button-medium border-medium button-secondary button-success">medium</button>
+						<button class="thebutton button-medium border-medium button-secondary button-error">medium</button>
+						<div style="display: inline-block; position: relative;">
+							<button class="thebutton button-medium border-medium button-secondary button-warning button-warning-hover">medium</button>
+							<img class="cursor" src="img/cursor.png" alt="cursor">
+						</div>
+					</div>
+					<div class="spacer2"></div>
+					<div class="fragment" data-fragment-index="2">
+						<button class="thebutton button-large border-large button-primary button-error-dark">large primary</button>
+					</div>
+				</section>
+				<section id="component-tokens">
+					<div>
+						<div class="token inline-token" style="margin-right: 20px;">component</div>
+						<div class="token inline-token">states</div>
+					</div>
+					<div class="spacer2"></div>
+					<div class="fragment">
+						<h5 class="red">defaults</h5>
+						<div class="flex-row">
+							<button class="thebutton button-medium border-medium button-default">medium</button>
+							<div style="position: relative; display: inline-block; margin-left: 20px;">
+								<div class="text-box">
+									I<span class="placeholder">type to search</span> 
+								</div>
+							</div>
+						</div>
+						<div class="spacer2"></div>
+						<h5 class="red">states</h5>
+						<div class="flex-row">
+							<button class="thebutton button-medium border-medium button-secondary button-error">medium</button>
+							<div style="position: relative; display: inline-block; margin-left: 20px;">
+								<div class="message-box">
+									An error occured when sending your data. Please refresh the page.
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+				<section id="despite">
+					<h3 class="red">Despite The Tokens</h3>
+					<div class="fragment">
+						<h5>icons</h5>
+						<img src="img/icons.png" width="400px" alt="Icons">
+					</div>
+					<div class="spacer2"></div>
+					<div class="fragment">
+						<h5>interactions</h5>
+						<img src="img/gestures.png" width="800px" alt="Gestures">
+					</div>
+				</section>
+				<section id="interactions">
+					<h3 class="red">Interactions Library</h3>
+					<div  style="text-align: left;">
+						<h5 class="red">hover</h5>
+						<p>
+							Applies when element has an executable action, hover visually indicates the action availability.
+						</p>
+					</div>
+					<div style="text-align: left;">
+						<h5 class="red">click to action</h5>
+						<p>
+							Applies only when both button down, and button up actions are performed withing the element boundaries, action is performed when the 'button up' event is finished. Element should visually indicate both 'down' and 'up' events. Every element with this action should be indicated on hover [see hover interaction].
+						</p>
+					</div>
+					<div style="text-align: left;">
+						<h5 class="red">click to toggle</h5>
+						<p>
+							Element state is changed when 'button down' event is finished. Every element with toggle should be indicated on hover [see hover interaction].
+						</p>
+					</div>
+					<div style="text-align: left;">
+						<h5 class="red">text content strategy - ellipsis</h5>
+						<p>
+							Content text is always one line only. In the case of insufficient space,
+							text is truncated at the end and followed by the ellipsis character. Component must provide the way to display the whole text on long hover [see long hover interaction].
+						</p>
+					</div>
+					<img src="img/tldr.jpg" class="tldr fragment" width="800px" alt="TLDR">
+				</section>
+				<section id="button-summary">
+					<h3 class="red">The Button</h3>
+					<div class="spacer2"></div>
+					<button class="thebutton standalone nocolor glory">The Button</button>
+					<div class="spacer2"></div>
+					<table class="with-bottom-border">
+						<tr>
+							<td>variation</td>
+							<td>basic, with icon, icon only, ghost, split, ...</td>
+						</tr>
+						<tr>
+							<td>state</td>
+							<td>default, pressed, disabled, error, warning, ...</td>
+						</tr>
+						<tr>
+							<td>hierarchy</td>
+							<td>default, primary, secondary, ...</td>
+						</tr>
+						<tr>
+							<td>element</td>
+							<td>button, submit, link, a, ...</td>
+						</tr>
+						<tr>
+							<td>quality</td>
+							<td>responsive, accessible, themable,<br> composable, browser/device compatible, ...</td>
+						</tr>
+					</table>
+					<img src="img/omg.jpg" class="fragment omg" alt="OMG" width="400px">
+				</section>
+				<section id="button-variations">
+					<div>
+						<button class="thebutton button-large border-large button-primary">large primary</button>
+						<button class="thebutton button-medium border-medium button-secondary">medium secondary</button>
+						<button class="thebutton button-small border-small button-default">small default</button>
+					</div>
+					<div class="spacer1"></div>
+					<div>
+						<button class="thebutton button-medium border-medium button-secondary button-success">success</button>
+						<button class="thebutton button-medium border-medium button-secondary button-error">error</button>
+						<div style="display: inline-block; position: relative;">
+							<button class="thebutton button-medium border-medium button-secondary button-warning button-warning-hover">warning</button>
+							<img class="cursor" src="img/cursor.png" alt="cursor">
+						</div>
+					</div>
+					<div class="spacer1"></div>
+					<div style="justify-content: center; display: flex;">
+						<button class="thebutton button-medium border-medium button-secondary button-with-icon">with icon <img  style="margin-left: 20px;" src="img/icon-read.png" width="50px" alt="read"></button>
+						<button class="thebutton button-small border-small button-default button-with-icon" style="margin-left: 15px;"><img src="img/icon-read.png" width="50px" alt="read"></button>
+					</div>
+					<div class="spacer1"></div>
+					<div>
+						<div class="button-link">link</div>
+					</div>
+					<div class="spacer1"></div>
+					<div>
+						<img src="img/icon-read.png" width="50px" alt="read">
+					</div>
+				</section>
+				<section id="component-cost">
+					<h2 class="red">costs</h2>
+					<div class="fragment">
+						<div class="spacer2"></div>
+						<button class="thebutton button-medium border-medium button-secondary">medium</button>
+						<div class="spacer1"></div>
+						<h3 class="fragment">$40 000</h3>
+					</div>
+					<div class="spacer2"></div>
+					<div class="fragment">
+						<img src="img/datagrid.png" alt="Datagrid" width="1400px">
+						<div class="spacer1"></div>
+						<h3>?</h3>
+					</div>
+				</section>
+				<section id="taxonomy">
+					<h3 class="red">Taxonomy</h3>
+					<div class="spacer2"></div>
+					<div class="fragment">
+						<img src="img/atomic-design.png" alt="Atomic Design" width="800px">
+					</div>
+					<div class="spacer2"></div>
+					<div class="fragment">
+						<h5 class="red">how to</h5>
+						<table>
+							<tr>
+								<td>1. explore the product</td>
+							</tr>
+							<tr>
+								<td>2. screenshot components</td>
+							</tr>
+							<tr>
+								<td>3. print and cut them</td>
+							</tr>
+							<tr>
+								<td>4. tag them</td>
+							</tr>
+							<tr>
+								<td>5. collect to groups</td>
+							</tr>
+							<tr>
+								<td>6. label groups</td>
+							</tr>
+							<tr>
+								<td>7. create your taxonomy tree</td>
+							</tr>
+						</table>
+					</div>
+				</section>
+				<section id="distribution">
+					<h2>one <span class="red cross fragment">ring</span> taxonomy</h2>
+					<div>
+						<img src="img/atomic-design.png" alt="Atomic Design" width="800px">
+					</div>
+					<div class="spacer2"></div>
+					<div class="fragment">
+						<h2 class="red">multiple libraries</h2>
+						<div class="spacer1"></div>
+						<div class="department-wrapper">
+							<div class="department">
+								<div class="title">XD</div>
+								<div class="text">wireframe library</div>
+							</div>
+							<div class="department">
+								<div class="title">VD</div>
+								<div class="text">visual library</div>
+							</div>
+							<div class="department">
+								<div class="title">DEV/PM</div>
+								<div class="text">component library</div>
+							</div>
+						</div>
+					</div>
+					
+				</section>
+				<section id="summary">
+					<h3 class="red">design system is</h3>
+					<table class="fragment">
+						<tr>
+							<td style="text-align: center;">design tokens</td>
+						</tr>
+						<tr>
+							<td style="text-align: center;">taxonomy</td>
+						</tr>
+						<tr>
+							<td style="text-align: center;">wireframe library</td>
+						</tr>
+						<tr>
+							<td style="text-align: center;">visual library</td>
+						</tr>
+						<tr>
+							<td style="text-align: center;">component library</td>
+						</tr>
+						<tr>
+							<td style="text-align: center;">library hub</td>
+						</tr>
+						<tr>
+							<td style="text-align: center;">layouting templates</td>
+						</tr>
+						<tr>
+							<td style="text-align: center;">guidelines [voice of tone, motion]</td>
+						</tr>
+						<tr>
+							<td style="text-align: center;">tools</td>
+						</tr>
+					</table>
 
-    <div id="timelineview" class="step" data-x="4000" data-y="-1520" data-z="20" scale="2">
-      <ul class="needs">
-        <li>user friendly</li>
-        <li>responsive</li>
-        <li>mobile friendly</li>
-        <li>native app experience</li>
-        <li>modular</li>
-        <li>well tested</li>
-        <li>easy to develop</li>
-      </ul>
-    </div>
+					<aside class="notes">
+						Everyone is talking about the Design Systems, for a lot of people
+						it's just a bunch of element tight togeteher. I hope that today,
+						after this presentation you've got the idea what the using the design
+						system means and how it improves everyday workflow and keeps overall
+						consistency.
+					</aside>
+				</section>
+				<section id="why">
+					<table class="table-center fragment">
+						<tr>
+							<td>good craftmanship</td>
+						</tr>
+						<tr>
+							<td>designers maintain the library</td>
+						</tr>
+						<tr>
+							<td>developers are mainly consumers</td>
+						</tr>
+						<tr>
+							<td>centralized design decisions</td>
+						</tr>
+						<tr>
+							<td>quick conversation between designers and developers</td>
+						</tr>
+						<tr>
+							<td>consistency</td>
+						</tr>
+						<tr>
+							<td>awareness of the impact</td>
+						</tr>
+						<tr>
+							<td>systemic design approach</td>
+						</tr>
+						<tr>
+							<td>up to date design specs</td>
+						</tr>
+						<tr>
+							<td>positive impact on customer experience</td>
+						</tr>
+					</table>
+					<img src="img/why.jpg" alt="why" class="why" width="500">
+				</section>
+				
+				<section id="evangelism" class="full">
+					<!--<h2 class="red evang fragment">evangelism</h2>-->
+					<img class="evang fragment" width="500px" src="img/bullshit.png" alt="bullshit">
+				</section>
+				<section id="qa">
+				
+				</section>
+			</div>
+		</div>
 
-    <div id="technologies" class="step" data-x="3700" data-y="-200" style="width: 3000px; height: 2000px;" data-scale="2">
-    </div>
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
 
-    <div id="managers" class="step list" data-x="3000" data-y="-500" style="width: 280px;">
-      <h5>Managers</h5>
-      <a href="https://www.npmjs.com/" title="npm" target="_blank"><img alt="npm" src="img/npm.svg" class="badge big"></a>
-      <br>
-      <a href="http://bower.io/" title="Bower" target="_blank"><img alt="Bower" src="img/bower.png" class="badge big"></a>
-      <a href="http://jspm.io/" title="jspm" target="_blank"><img alt="jspm" src="img/jspm.svg" class="badge big"></a>
-    </div>
-
-    <div id="styleprocessors" class="step list" data-x="3000" data-y="0" style="width: 330px;">
-      <h5>Style processors</h5>
-      <a href="http://the-echoplex.net/csscrush/" title="CSS Crush" target="_blank"><img alt="CSS Crush" src="img/csscrush.svg" class="badge"></a>
-      <a href="http://www.myth.io/" title="Myth" target="_blank"><img alt="Myth" src="img/myth.svg" class="badge"></a>
-      <br>
-      <a href="http://lesscss.org/" title="Less" target="_blank"><img alt="Less" src="img/less.png" class="badge big"></a>
-      <br>
-      <a href="http://sass-lang.com/" title="Sass" target="_blank"><img alt="Sass" src="img/sass.svg" class="badge big"></a>
-      <a href="http://stylus-lang.com/" title="Stylus" target="_blank"><img alt="Stylus" src="img/stylus.png" class="badge big"></a>
-      <br>
-      <a href="https://github.com/postcss/postcss" title="PostCSS" target="_blank"><img alt="PostCSS" src="img/postcss.svg" class="badge"></a>
-      <a href="https://github.com/postcss/autoprefixer" title="AutoPrefixer" target="_blank"><img alt="AutoPrefixer" src="img/autoprefixer.png" class="badge"></a>
-      <br>
-      <a href="https://modernizr.com/" title="Modernizr" target="_blank"><img alt="Modernizr" src="img/modernizr.png" class="badge"></a>
-    </div>
-
-    <div id="styleframeworks" class="step list" data-x="3300" data-y="0" style="width: 250px;">
-      <h5>Style Frameworks</h5>
-      <a href="http://getbootstrap.com/" title="Bootstrap" target="_blank"><img alt="Bootstrap" src="img/bootstrap.jpg" class="badge"></a>
-      <a href="http://foundation.zurb.com/" title="Zubr Foundation" target="_blank"><img alt="Zubr Foundation" src="img/zubr-foundation.svg" class="badge"></a>
-      <br>
-      <a href="http://compass-style.org/" title="Compass" target="_blank"><img alt="Compass" src="img/compass.png" class="badge"></a>
-      <a href="http://cardinalcss.com/" title="CardinalCSS" target="_blank"><img alt="CardinalCSS" src="img/cardinalcss.png" class="badge"></a>
-      <br>
-      <a href="http://cssreset.com/" title="CSS Reset" target="_blank"><img alt="CSS Reset" src="img/cssreset.gif" class="badge"></a>
-    </div>
-
-    <div id="modules" class="step list" data-x="3300" data-y="-400" style="width: 250px;">
-      <h5>Modules</h5>
-      <a href="http://stealjs.com/" title="StealJS" target="_blank"><img alt="StealJS" src="img/stealjs.svg" class="badge small"></a>
-      <a href="https://github.com/systemjs/systemjs" title="systemjs" target="_blank"><img alt="systemjs" src="img/systemjs.png" class="badge small"></a>
-      <br>
-      <a href="https://webpack.github.io/" title="webpack" target="_blank"><img alt="webpack" src="img/webpack.svg" class="badge big"></a>
-      <a href="http://requirejs.org/" title="RequireJS" target="_blank"><img alt="RequireJS" src="img/requirejs.png" class="badge big"></a>
-      <br>
-      <a href="http://browserify.org/" title="browserify" target="_blank"><img alt="browserify" src="img/browserify.png" class="badge"></a>
-    </div>
-
-    <div id="langext" class="step list" data-x="3600" data-y="-400" style="width: 280px;">
-      <h5>Language extensions</h5>
-      <a href="https://www.dartlang.org/" title="Dart" target="_blank"><img alt="Dart" src="img/dart.png" class="badge"></a>
-      <a href="http://coffeescript.org/" title="Coffee Script" target="_blank"><img alt="Coffee Script" src="img/coffeescript.png" class="badge"></a>
-      <br>
-      <a href="http://livescript.net/" title="LiveScript" target="_blank"><img alt="LiveScript" src="img/livescript.png" class="badge"></a>
-      <br>
-      <a href="https://www.typescriptlang.org/" title="TypeScript" target="_blank" target="_blank"><img alt="TypeScript" src="img/ts.png" class="badge"></a>
-      <a href="https://facebook.github.io/react/docs/jsx-in-depth.html" title="JSX" target="_blank" target="_blank"><img alt="JSX" src="img/jsx.png" class="badge"></a>
-      <a href="http://asmjs.org/" title="asm.js" target="_blank" target="_blank"><img alt="asm.js" src="img/asmjs.png" class="badge"></a>
-      <br>
-      <a href="https://es5.github.io/" title="ES5" target="_blank" target="_blank"><img alt="ES5" src="img/es5.png" class="badge"></a>
-      <a href="https://nodejs.org/en/docs/es6/" title="ES6" target="_blank" target="_blank"><img alt="ES6" src="img/es6.jpg" class="badge"></a>
-      <a href="http://www.2ality.com/2016/01/ecmascript-2016.html" title="ES7" target="_blank" target="_blank"><img alt="ES7" src="img/es7.png" class="badge"></a>
-      <br>
-      <a href="http://haxe.org/" title="Haxe" target="_blank" target="_blank"><img alt="Haxe" src="img/haxe.png" class="badge"></a>
-      <a href="https://kotlinlang.org/" title="Kotlin" target="_blank" target="_blank"><img alt="Kotlin" src="img/kotlin.png" class="badge"></a>
-      <br>
-      <a href="http://flowtype.org/" title="Flow" target="_blank" target="_blank"><img alt="Flow" src="img/flow.png" class="badge"></a>
-    </div>
-
-    <div id="transpilers" class="step list" data-x="3600" data-y="100" style="width: 340px">
-      <h5>Transpilers</h5>
-      <a href="https://babeljs.io/" title="Babel" target="_blank"><img alt="Babel" src="img/babel.png" class="badge big"></a>
-      <br>
-      <a href="https://github.com/google/traceur-compiler" title="Traceur Compiler" target="_blank"><img alt="Traceur Compiler" src="img/traceur.svg" class="badge big"></a>
-      <a href="https://developers.google.com/closure/compiler/" title="Closure Compiler" target="_blank"><img alt="Closure Compiler" src="img/closurecompiler.png" class="badge big"></a>
-    </div>
-
-    <div id="frameworks" class="step list" data-x="3950" data-y="-50" style="width: 490px">
-      <h5>Frameworks</h5>
-      <a href="http://cycle.js.org/" title="Cycle.js" target="_blank"><img alt="Cycle.js" src="img/cyclejs.svg" class="badge"></a>
-      <a href="https://vuejs.org/" title="Vue.js" target="_blank"><img alt="Vue.js" src="img/vuejs.png" class="badge"></a>
-      <a href="http://aurelia.io/" title="aurelia.io" target="_blank"><img alt="aurelia.io" src="img/aurelia.png" class="badge"></a>
-      <a href="http://riotjs.com/" title="riot" target="_blank"><img alt="riot" src="img/riot.png" class="badge"></a>
-      <br>
-      <a href="https://angularjs.org/" title="AngularJS" target="_blank"><img alt="AngularJS" src="img/angular.png" class="badge big"></a>
-      <a href="https://facebook.github.io/react/" title="React" target="_blank"><img alt="React" src="img/react.png" class="badge big"></a>
-      <a href="http://emberjs.com/" title="Ember.js" target="_blank"><img alt="Ember.js" src="img/ember.png" class="badge big"></a>
-      <a href="https://github.com/reactjs/redux" title="Redux" target="_blank" target="_blank"><img alt="Redux" src="img/redux.png" class="badge big"></a>
-      <br>
-      <a href="http://backbonejs.org/" title="backbone.js" target="_blank"><img alt="backbone.js" src="img/backbone.svg" class="badge"></a>
-      <a href="https://www.meteor.com/" title="meteor" target="_blank"><img alt="meteor" src="img/meteor.png" class="badge"></a>
-      <a href="https://www.polymer-project.org/1.0/" title="polymer" target="_blank"><img alt="polymer" src="img/polymer.png" class="badge"></a>
-      <a href="https://www.sencha.com/products/extjs/" title="Ext JS" target="_blank"><img alt="Ext JS" src="img/extjs.png" class="badge"></a>
-      <br>
-      <a href="https://canjs.com/" title="CanJS" target="_blank"><img alt="CanJS" src="img/canjs.png" class="badge small"></a>
-      <a href="http://spinejs.com/" title="SpineJS" target="_blank"><img alt="SpineJS" src="img/spine.png" class="badge small"></a>
-      <br>
-      <a href="http://knockoutjs.com/" title="knockout" target="_blank"><img alt="knockout" src="img/knockout.png" class="badge small"></a>
-    </div>
-
-    <div id="latestframework" class="step list" data-x="3950" data-y="250" data-rotate-x="-30" style="width: 430px">
-      <a id="latestframeworka" href="http://www.isaacchansky.me/days-since-last-new-js-framework/" target="_blank">latest framework?</a>
-    </div>
-
-    <div id="platform" class="step list" data-x="3950" data-y="-500" style="width: 280px;">
-      <h5>Platforms</h5>
-      <a href="https://www.xamarin.com/" title="Xamarin" target="_blank"><img alt="Xamarin" src="img/xamarin.svg" class="badge"></a>
-      <a href="https://cordova.apache.org/" title="Cordova" target="_blank"><img alt="Cordova" src="img/cordova.png" class="badge"></a>
-      <a href="http://ionicframework.com/" title="ionic" target="_blank"><img alt="ionic" src="img/ionic.png" class="badge"></a>
-      <br>
-      <a href="https://facebook.github.io/react-native/" title="React Native" target="_blank"><img alt="React Native" src="img/reactnative.png" class="badge big"></a>
-      <br>
-      <a href="http://electron.atom.io/" title="Electron" target="_blank"><img alt="Electron" src="img/electron.png" class="badge"></a>
-      <a href="https://www.nativescript.org/" title="NativeScript" target="_blank"><img alt="NativeScript" src="img/nativescript.jpeg" class="badge"></a>
-    </div>
-
-    <div id="libraries" class="step list" data-x="4250" data-y="-400" style="width: 260px;">
-      <h5>Libraries</h5>
-      <a href="http://reactivex.io/" title="RxJS" target="_blank"><img alt="RxJS" src="img/rx.png" class="badge"></a>
-      <a href="https://lodash.com/" title="lodash" target="_blank"><img alt="lodash" src="img/lodash.png" class="badge"></a>
-      <a href="https://pouchdb.com/" title="PouchDB" target="_blank"><img alt="PouchDB" src="img/pouchdb.png" class="badge"></a>
-      <br>
-      <a href="http://dmitrybaranovskiy.github.io/raphael/" title="Raphael" target="_blank"><img alt="Raphael" src="img/raphaeljs.png" class="badge"></a>
-      <a href="https://d3js.org/" title="D3" target="_blank"><img alt="D3" src="img/d3.svg" class="badge"></a>
-      <a href="http://www.telerik.com/kendo-ui" title="Kendo UI" target="_blank"><img alt="Kendo UI" src="img/kendoui.png" class="badge"></a>
-      <br>
-      <a href="http://momentjs.com/" title="Moment" target="_blank"><img alt="Moment" src="img/moment.png" class="badge"></a>
-      <a href="http://socket.io/" title="socket.io" target="_blank"><img alt="socket.io" src="img/socketio.gif" class="badge"></a>
-      <br>
-      <a href="http://www.babylonjs.com/" title="Babylon" target="_blank"><img alt="Babylon" src="img/babylon.svg" class="badge"></a>
-    </div>
-
-    <div id="checkers" class="step list" data-x="4330" data-y="80" style="width: 260px;">
-      <h5>Checkers</h5>
-      <a href="http://jscs.info/" title="JSCS" target="_blank"><img alt="JSCS" src="img/jscs.png" class="badge big"></a>
-      <a href="http://eslint.org/" title="ESLint" target="_blank"><img alt="ESLint" src="img/eslint.svg" class="badge big"></a>
-      <br>
-      <a href="http://jshint.com/" title="JSHint" target="_blank"><img alt="JSHint" src="img/jshint.png" class="badge"></a>
-      <a href="https://palantir.github.io/tslint/" title="TSLint" target="_blank"><img alt="TSLint" src="img/tslint.png" class="badge small"></a>
-      <br>
-      <a href="http://www.jslint.com/" title="JSLint" target="_blank"><img alt="JSLint" src="img/jslint.png" class="badge small"></a>
-    </div>
-
-    <div id="testing" class="step list" data-x="4600" data-y="70" style="width: 350px;">
-      <h5>Testing</h5>
-      <a href="http://phantomjs.org/" title="PhantomJS" target="_blank"><img alt="PhantomJS" src="img/phantomjs.png" class="badge"></a>
-      <a href="https://karma-runner.github.io/0.13/index.html" title="Karma" target="_blank"><img alt="Karma JS" src="img/karma.png" class="badge"></a>
-      <a href="http://docs.seleniumhq.org/" title="Selenium" target="_blank"><img alt="Selenium" src="img/selenium.png" class="badge"></a>
-      <a href="https://www.browsersync.io/" title="BrowserSync" target="_blank"><img alt="BrowserSync" src="img/browsersync.png" class="badge"></a>
-      <br>
-      <a href="http://jasmine.github.io/" title="Jasmine" target="_blank"><img alt="Jasmine" src="img/jasmine.png" class="badge"></a>
-      <a href="https://mochajs.org/" title="Mocha" target="_blank"><img alt="Mocha" src="img/mocha.png" class="badge"></a>
-      <a href="http://chaijs.com/" title="Chai" target="_blank"><img alt="Chai" src="img/chai.png" class="badge"></a>
-      <a href="http://angular.github.io/protractor/" title="Protractor" target="_blank"><img alt="Protractor" src="img/protractor.png" class="badge"></a>
-      <br>
-      <a href="https://facebook.github.io/jest/" title="Jest" target="_blank"><img alt="Jest" src="img/jest.png" class="badge"></a>
-      <a href="http://sinonjs.org/" title="Sinon JS" target="_blank"><img alt="Sinon JS" src="img/sinonjs.png" class="badge"></a>
-    </div>
-
-    <div id="pipeline" class="step list" data-x="4450" data-y="-300" style="width: 200px;">
-      <h5>Pipeline</h5>
-      <a href="http://gruntjs.com/" title="Grunt" target="_blank"><img alt="Grunt" src="img/grunt.png" class="badge big"></a>
-      <a href="http://gulpjs.com/" title="Gulp" target="_blank"><img alt="Gulp" src="img/gulp.png" class="badge big"></a>
-      <br>
-      <a href="https://www.npmjs.com/" title="npm" target="_blank"><img alt="npm" src="img/npm.svg" class="badge small"></a>
-      <br>
-      <a href="http://broccolijs.com/" title="Broccoli.js" target="_blank"><img alt="Broccoli.js" src="img/broccoli.png" class="badge"></a>
-    </div>
-
-    <div id="devhelp" class="step list" data-x="4650" data-y="-200" style="width: 220px;">
-      <h5>Development</h5>
-      <a href="http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/" title="Source Maps" target="_blank"><img alt="Source Maps" src="img/sourcemaps.png" class="badge"></a>
-      <a href="http://livereload.com/" title="LiveReload" target="_blank"><img alt="LiveReload" src="img/livereload.png" class="badge"></a>
-    </div>
-
-    <div id="services" class="step list" data-x="4650" data-y="-520" style="width: 210px;">
-      <h5>Services</h5>
-      <a href="https://saucelabs.com/" title="SauceLabs" target="_blank"><img alt="SauceLabs" src="img/saucelabs.png" class="badge"></a>
-      <br>
-      <a href="https://www.rainforestqa.com/" title="Rainforest QA" target="_blank"><img alt="Rainforest QA" src="img/rainforest.png" class="badge"></a>
-      <br>
-      <a href="https://www.browserstack.com/" title="BrowserStack" target="_blank"><img alt="BrowserStack" src="img/browserstack.png" class="badge"></a>
-      <a href="https://travis-ci.org/" title="Travis CI" target="_blank"><img alt="Travis CI" src="img/travis.png" class="badge"></a>
-      <br>
-      <a href="https://about.gitlab.com/" title="GitLab" target="_blank"><img alt="GitLab" src="img/gitlab.png" class="badge"></a>
-      <a href="https://github.com/" title="GitHub" target="_blank"><img alt="GitHub" src="img/github.png" class="badge"></a>
-    </div>
-
-    <div id="webdevelopment" class="step" data-x="6000" data-y="-200">
-      <img src="img/webdev.jpg">
-      <img id="angry" class="angry">
-    </div>
-
-    <div id="scafolding" class="step list" data-x="7200" data-y="-200" style="width: 300px;">
-      <h5>Scafolding</h5>
-      <a href="http://yeoman.io/" title="Yeoman" target="_blank"><img alt="Yeoman" src="img/yeoman.png" class="badge big"></a>
-      <a href="http://slushjs.github.io/" title="Slush" target="_blank"><img alt="Slush" src="img/slush.png" class="badge big"></a>
-      <a href="https://github.com/search?l=JavaScript&o=desc&q=boilerplate&s=stars&type=Repositories" title="Boilerplate" target="_blank"><img alt="Boilerplate" src="img/boilerplate.png" class="badge"></a>
-    </div>
-
-    <div id="examplepipelinesboilerplate" class="step examplepipelines" data-x="8800" data-y="-200">
-      <h5>PIPELINES</h5>
-      <div class="react-redux-universal-hot-example">
-        <a href="https://github.com/erikras/react-redux-universal-hot-example" class="pipeline" title="react-redux-universal-hot-example" target="_blank">react-redux-universal-hot-example:</a>
-        <br>
-        <a href="https://github.com/search?l=JavaScript&o=desc&q=boilerplate&s=stars&type=Repositories" title="Boilerplate" target="_blank"><img alt="Boilerplate" src="img/boilerplate.png" class="badge small"></a>
-        <img src="img/arrow.png" class="arrow">
-        <a href="https://www.npmjs.com/" title="npm" target="_blank"><img alt="npm" src="img/npm.svg" class="badge small"></a>
-        <img src="img/arrow.png" class="arrow">
-        <a href="https://facebook.github.io/react/" title="React" target="_blank"><img alt="React" src="img/react.png" class="badge small"></a>
-        <a href="https://github.com/reactjs/redux" title="Redux" target="_blank" target="_blank"><img alt="Redux" src="img/redux.png" class="badge small"></a>
-        <img src="img/arrow.png" class="arrow">
-        <a href="http://www.2ality.com/2016/01/ecmascript-2016.html" title="ES7" target="_blank" target="_blank"><img alt="ES7" src="img/es7.png" class="badge small"></a>
-        <a href="https://babeljs.io/" title="Babel" target="_blank"><img alt="Babel" src="img/babel.png" class="badge small"></a>
-        <a href="https://webpack.github.io/" title="webpack" target="_blank"><img alt="webpack" src="img/webpack.svg" class="badge small"></a>
-        <img src="img/arrow.png" class="arrow">
-        <a href="http://eslint.org/" title="ESLint" target="_blank"><img alt="ESLint" src="img/eslint.svg" class="badge small"></a>
-        <a href="https://mochajs.org/" title="Mocha" target="_blank"><img alt="Mocha" src="img/mocha.png" class="badge small"></a>
-      </div>
-      <div class="react-typescript-boilerplate">
-        <a href="https://github.com/keokilee/react-typescript-boilerplate" class="pipeline" title="react-typescript-boilerplate" target="_blank">react-typescript-boilerplate:</a>
-        <br>
-        <a href="https://github.com/search?l=JavaScript&o=desc&q=boilerplate&s=stars&type=Repositories" title="Boilerplate" target="_blank"><img alt="Boilerplate" src="img/boilerplate.png" class="badge small"></a>
-        <img src="img/arrow.png" class="arrow">
-        <a href="https://www.npmjs.com/" title="npm" target="_blank"><img alt="npm" src="img/npm.svg" class="badge small"></a>
-        <img src="img/arrow.png" class="arrow">
-        <a href="https://www.typescriptlang.org/" title="TypeScript" target="_blank" target="_blank"><img alt="TypeScript" src="img/ts.png" class="badge small"></a>
-        <a href="https://facebook.github.io/react/" title="React" target="_blank"><img alt="React" src="img/react.png" class="badge small"></a>
-        <img src="img/arrow.png" class="arrow">
-        <a href="https://babeljs.io/" title="Babel" target="_blank"><img alt="Babel" src="img/babel.png" class="badge small"></a>
-        <a href="https://webpack.github.io/" title="webpack" target="_blank"><img alt="webpack" src="img/webpack.svg" class="badge small"></a>
-        <img src="img/arrow.png" class="arrow">
-        <a href="https://palantir.github.io/tslint/" title="TSLint" target="_blank"><img alt="TSLint" src="img/tslint.png" class="badge small"></a>
-      </div>
-    </div>
-
-    <div id="examplepipelinesscafolding" class="step examplepipelines" data-x="10800" data-y="-200">
-      <div class="react-gulp">
-        <a href="https://github.com/randylien/generator-react-gulp-browserify" class="pipeline" title="generator-react-gulp-browserify" target="_blank">generator-react-gulp-browserify:</a>
-        <br>
-        <div class="packages">
-          <a href="http://yeoman.io/" title="Yeoman" target="_blank"><img alt="Yeoman" src="img/yeoman.png" class="badge small"></a>
-          <img src="img/arrow.png" class="arrow">
-          <a href="https://www.npmjs.com/" title="npm" target="_blank"><img alt="npm" src="img/npm.svg" class="badge small"></a>
-          <a href="http://bower.io/" title="Bower" target="_blank"><img alt="Bower" src="img/bower.png" class="badge small"></a>
-          <img src="img/arrow.png" class="arrow">
-        </div>
-        <a href="http://coffeescript.org/" title="Coffee Script" target="_blank"><img alt="Coffee Script" src="img/coffeescript.png" class="badge small"></a>
-        <a href="https://facebook.github.io/react/" title="React" target="_blank"><img alt="React" src="img/react.png" class="badge small"></a>
-        <a href="https://jquery.com/" title="jQuery" target="_blank"><img alt="jQuery" src="img/jquery.png" class="badge small"></a>
-        <div class="end">
-          <img src="img/arrow.png" class="arrow"> ...
-        </div>
-        <br>
-        <div class="styles">
-          <a href="http://sass-lang.com/" title="Sass" target="_blank"><img alt="Sass" src="img/sass.svg" class="badge small"></a>
-          <a href="http://compass-style.org/" title="Compass" target="_blank"><img alt="Compass" src="img/compass.png" class="badge small"></a>
-          <a href="http://getbootstrap.com/" title="Bootstrap" target="_blank"><img alt="Bootstrap" src="img/bootstrap.jpg" class="badge small"></a>
-        </div>
-        <br>
-        <br>
-        <div>
-          ... <img src="img/arrow.png" class="arrow">
-          <a href="http://gulpjs.com/" title="Gulp" target="_blank"><img alt="Gulp" src="img/gulp.png" class="badge small"></a>
-          <a href="http://browserify.org/" title="browserify" target="_blank"><img alt="browserify" src="img/browserify.png" class="badge small"></a>
-          <img src="img/arrow.png" class="arrow">
-          <a href="http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/" title="Source Maps" target="_blank"><img alt="Source Maps" src="img/sourcemaps.png" class="badge small"></a>
-          <a href="https://www.browsersync.io/" title="BrowserSync" target="_blank"><img alt="BrowserSync" src="img/browsersync.png" class="badge small"></a>
-          <a href="https://modernizr.com/" title="Modernizr" target="_blank"><img alt="Modernizr" src="img/modernizr.png" class="badge small"></a>
-          <img src="img/arrow.png" class="arrow">
-          <a href="https://mochajs.org/" title="Mocha" target="_blank"><img alt="Mocha" src="img/mocha.png" class="badge small"></a>
-          <a href="https://facebook.github.io/jest/" title="Jest" target="_blank"><img alt="Jest" src="img/jest.png" class="badge small"></a>
-          <img src="img/arrow.png" class="arrow">
-          <a href="https://travis-ci.org/" title="Travis CI" target="_blank"><img alt="Travis CI" src="img/travis.png" class="badge small"></a>
-        </div>
-      </div>
-      <div class="slush-meanjs">
-        <a href="https://www.npmjs.com/package/slush-meanjs" class="pipeline" title="slush-meanjs" target="_blank">slush-meanjs:</a>
-        <br>
-        <div class="packages">
-          <a href="http://slushjs.github.io/" title="Slush" target="_blank"><img alt="Slush" src="img/slush.png" class="badge small"></a>
-          <img src="img/arrow.png" class="arrow">
-          <a href="https://www.npmjs.com/" title="npm" target="_blank"><img alt="npm" src="img/npm.svg" class="badge small"></a>
-          <a href="http://bower.io/" title="Bower" target="_blank"><img alt="Bower" src="img/bower.png" class="badge small"></a>
-          <img src="img/arrow.png" class="arrow">
-        </div>
-        <div class="lang">
-          <a href="https://angularjs.org/" title="AngularJS" target="_blank"><img alt="AngularJS" src="img/angular.png" class="badge small"></a>
-          <a href="https://lodash.com/" title="lodash" target="_blank"><img alt="lodash" src="img/lodash.png" class="badge small"></a>
-        </div>
-        <div class="endarrow">
-          <img src="img/arrow.png" class="arrow"> ...
-        </div>
-        <br>
-        <div class="styles">
-          <a href="http://lesscss.org/" title="Less" target="_blank"><img alt="Less" src="img/less.png" class="badge small"></a>
-          <a href="http://sass-lang.com/" title="Sass" target="_blank"><img alt="Sass" src="img/sass.svg" class="badge small"></a>
-          <a href="https://github.com/postcss/postcss" title="PostCSS" target="_blank"><img alt="PostCSS" src="img/postcss.svg" class="badge small"></a>
-          <a href="https://github.com/postcss/autoprefixer" title="AutoPrefixer" target="_blank"><img alt="AutoPrefixer" src="img/autoprefixer.png" class="badge small"></a>
-          <br>
-        </div>
-        <br>
-        <br>
-        <div>
-          ... <img src="img/arrow.png" class="arrow">
-          <a href="http://gulpjs.com/" title="Gulp" target="_blank"><img alt="Gulp" src="img/gulp.png" class="badge small"></a>
-          <a href="http://gruntjs.com/" title="Grunt" target="_blank"><img alt="Grunt" src="img/grunt.png" class="badge small"></a>
-          <img src="img/arrow.png" class="arrow">
-          <a href="http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/" title="Source Maps" target="_blank"><img alt="Source Maps" src="img/sourcemaps.png" class="badge small"></a>
-          <a href="http://livereload.com/" title="LiveReload" target="_blank"><img alt="LiveReload" src="img/livereload.png" class="badge small"></a>
-          <img src="img/arrow.png" class="arrow">
-          <a href="https://mochajs.org/" title="Mocha" target="_blank"><img alt="Mocha" src="img/mocha.png" class="badge small"></a>
-          <a href="http://jasmine.github.io/" title="Jasmine" target="_blank"><img alt="Jasmine" src="img/jasmine.png" class="badge small"></a>
-          <a href="http://phantomjs.org/" title="PhantomJS" target="_blank"><img alt="PhantomJS" src="img/phantomjs.png" class="badge small"></a>
-          <a href="https://karma-runner.github.io/0.13/index.html" title="Karma" target="_blank"><img alt="Karma JS" src="img/karma.png" class="badge small"></a>
-          <a href="http://angular.github.io/protractor/" title="Protractor" target="_blank"><img alt="Protractor" src="img/protractor.png" class="badge small"></a>
-          <a href="http://eslint.org/" title="ESLint" target="_blank"><img alt="ESLint" src="img/eslint.svg" class="badge small"></a>
-          <img src="img/arrow.png" class="arrow">
-          <a href="https://travis-ci.org/" title="Travis CI" target="_blank"><img alt="Travis CI" src="img/travis.png" class="badge small"></a>
-        </div>
-      </div>
-    </div>
-
-    <div id="thankyou" class="step thankyou" data-x="12400" data-y="-200">
-      <h1>THANK YOU</h1>
-    </div>
-</div>
-<script src="js/impress.js"></script>
-<script>impress().init();</script>
-</body>
-<script>
-document.addEventListener("keydown", function(e) {
-  if (e.keyCode === 13) {
-    toggleFullScreen();
-  }
-}, false);
-
-document.addEventListener('impress:stepenter', function(e){
-  if (e.target.getAttribute('id') === 'technologies') {
-    [].forEach.call(
-      document.querySelectorAll('.step.list'),
-      function (step) {
-        step.classList.add('highlight');
-      }
-    );
-  }
-
-  if (e.target.getAttribute('id') === 'webdevelopment') {
-    window.setTimeout(function () {
-      document.getElementById('angry').setAttribute('src', 'img/angry.gif');
-    }, 5000);
-  }
-});
-
-document.addEventListener('impress:stepleave', function(e){
-  if (e.target.getAttribute('id') === 'technologies') {
-    [].forEach.call(
-      document.querySelectorAll('.step.list.highlight'),
-      function (step) {
-        step.classList.remove('highlight');
-      }
-    );
-  }
-
-  if (e.target.getAttribute('id') === 'webdevelopment') {
-    document.getElementById('angry').setAttribute('src', '');
-  }
-});
-
-function toggleFullScreen() {
-  if (!document.fullscreenElement &&    // alternative standard method
-      !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement ) {  // current working methods
-    if (document.documentElement.requestFullscreen) {
-      document.documentElement.requestFullscreen();
-    } else if (document.documentElement.msRequestFullscreen) {
-      document.documentElement.msRequestFullscreen();
-    } else if (document.documentElement.mozRequestFullScreen) {
-      document.documentElement.mozRequestFullScreen();
-    } else if (document.documentElement.webkitRequestFullscreen) {
-      document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-    }
-  } else {
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-    } else if (document.msExitFullscreen) {
-      document.msExitFullscreen();
-    } else if (document.mozCancelFullScreen) {
-      document.mozCancelFullScreen();
-    } else if (document.webkitExitFullscreen) {
-      document.webkitExitFullscreen();
-    }
-  }
-}
-</script>
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
 </html>
